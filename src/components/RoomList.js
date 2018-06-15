@@ -36,24 +36,24 @@ class RoomList extends Component {
   render() {
       return (
         <div className="room-list">
-        <section>
-          <h1>Room List</h1>
-          {this.state.rooms.map((room, index) =>
-            <li key={room.key}>
-              {room.name}
-            </li>
-        )}
-        </section>
-        <div id="new-room">
-          <form onSubmit={ (e) => this.handleSubmit(e) }>
-            <p>Add New Room</p>
-            <label>
-              Room Name:
-              <input type="text" value={this.state.newRoomName} onChange={ (e) => this.handleChange(e) }/>
-            </label>
-            <input type="submit" value="submit" />
-          </form>
-        </div>
+          <section>
+            <h1>Room List</h1>
+            {this.state.rooms.map((room, index) =>
+              <li key={room.key}>
+                {room.name}
+              </li>
+          )}
+          </section>
+          <div id="new-room">
+            <form onSubmit={ (e) => this.handleSubmit(e) }>
+              <p>Add New Room</p>
+              <label>
+                Room Name:
+                <input type="text" value={this.state.newRoomName} onChange={ (e) => this.handleChange(e) }/>
+              </label>
+              <input type="submit" value="submit" />
+            </form>
+          </div>
         </div>
       )
     }
