@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './../styles/MessageList.css';
 
 class MessageList extends Component {
   constructor(props) {
@@ -15,12 +16,12 @@ class MessageList extends Component {
     this.messagesRef = this.props.firebase.database().ref("messages");
     this.handleChange=this.handleChange.bind(this);
     this.createMessage=this.createMessage.bind(this);
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
   }
 
   componentDidMount() {
     this.messagesRef.on('child_added', snapshot => {
       const messages = snapshot.val();
-      messages.key = snapshot.key;
       this.setState({ messages: this.state.messages.concat( messages ) });
     });
   }
@@ -36,12 +37,11 @@ class MessageList extends Component {
   }
 
   createMessage(e) {
-    e.preventDefault();
     this.messagesRef.push({
       username: this.state.username,
       content: this.state.content,
       sentAt: this.state.sentAt,
-      roomId: this.state.roomId
+      roomId: this.props.activeRoom.key
     })
     this.setState({
       username: "",
@@ -51,30 +51,31 @@ class MessageList extends Component {
     })
   }
 
-  handleSubmit(e) {
+  handleMessageSubmit(e) {
     e.preventDefault();
-    if (!this.state.messages) return
-    this.roomsRef.push({ name: this.state.messages })
-    this.setState({ messages: ''})
+    this.createMessage();
+    this.setState({ content: "" });
   }
 
   render() {
     return (
       <div className="message-list">
-        <section>
+        <h2 className="room-name">{this.props.activeRoom ? this.props.activeRoom.name : 'Please select a room' }</h2>
+        <section className="message-group">
           <h1>Messages</h1>
-          {this.state.messages.map((message) =>
-            <li key={message.key}>
-              {message.content}
-              </li>
+          {this.state.messages.filter(message => message.roomId === this.props.activeRoom.key).map((message, index) =>
+            <div key={index} className="messages">
+              <p id="username">Username: {message.username}</p>
+              <p id="content">Message: {message.content}</p>
+              <p id="timestamp">Timestamp: {message.sentAt}</p>
+            </div>
             )}
         </section>
         <div id="new-message">
-          <form onSubmit={ (e) => this.createMessage(e) }>
-            <p>New Message</p>
+          <form onSubmit={this.handleMessageSubmit}>
             <label>
               New Message:
-              <input type="text" value={this.state.content} onChange={ (e) => this.handleChange(e) } placeholder="Enter Message" />
+              <input type="text" value={this.state.content} onChange={this.handleChange} placeholder="Enter Message" />
             </label>
             <input type="submit" value="submit" />
           </form>

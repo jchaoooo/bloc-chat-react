@@ -22,11 +22,13 @@ var config = {
       this.state={
         activeRoom: ''
       }
-      this.activeRoom=this.activeRoom.bind(this);
+
+      this.changeActiveRoom = this.changeActiveRoom.bind(this);
     }
 
-    activeRoom(room) {
+    changeActiveRoom(room) {
       this.setState({ activeRoom: room })
+      console.log(this.state.activeRoom)
     }
 
 
@@ -38,10 +40,17 @@ var config = {
           </header>
           <main>
             <section id="sidebar">
-              <RoomList firebase={firebase} activeRoom={this.activeRoom} />
+              <RoomList
+                firebase={firebase}
+                activeRoom={this.state.activeRoom}
+                changeActiveRoom={this.changeActiveRoom}
+              />
             </section>
             <section id="main">
-              <MessageList firebase={firebase} activeRoom={this.activeRoom.key}/>
+              <MessageList
+                firebase={firebase}
+                activeRoom={this.state.activeRoom}
+              />
             </section>
           </main>
         </div>
