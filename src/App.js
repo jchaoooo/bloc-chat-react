@@ -4,6 +4,7 @@ import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
+import User from './components/User';
 
 var config = {
   apiKey: "AIzaSyDJ83bXV_8q2QLeQ4L1HzR8ar1Qos9rlTs",
@@ -20,13 +21,20 @@ var config = {
       super(props);
 
       this.state={
-        activeRoom: ''
+        activeRoom: '',
+        activeUser: ''
       }
 
-      this.changeActiveRoom = this.changeActiveRoom.bind(this);
+      this.setActiveRoom = this.setActiveRoom.bind(this);
+      this.setUser = this.setUser.bind(this);
+
     }
 
-    changeActiveRoom(room) {
+    setUser(user) {
+      this.setState({ activeUser: user })
+    }
+
+    setActiveRoom(room) {
       this.setState({ activeRoom: room })
       console.log(this.state.activeRoom)
     }
@@ -43,10 +51,15 @@ var config = {
               <RoomList
                 firebase={firebase}
                 activeRoom={this.state.activeRoom}
-                changeActiveRoom={this.changeActiveRoom}
+                setActiveRoom={this.setActiveRoom}
               />
             </section>
             <section id="main">
+              <User
+                firebase={firebase}
+                setUser={this.setUser}
+                user={this.state.activeUser}
+              />
               <MessageList
                 firebase={firebase}
                 activeRoom={this.state.activeRoom}
