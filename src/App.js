@@ -63,6 +63,8 @@ var config = {
               <MessageList
                 firebase={firebase}
                 activeRoom={this.state.activeRoom}
+                user={this.state.activeUser}
+                setUser={this.setUser}
               />
             </section>
           </main>
