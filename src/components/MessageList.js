@@ -28,7 +28,7 @@ class MessageList extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    const currentUser = this.props.user === null ? "Guest" : this.props.user.displayName
+    const currentUser = this.props.user === null ? "Guest" : this.props.user.displayName;
     this.setState({
       username: currentUser,
       content: e.target.value,
