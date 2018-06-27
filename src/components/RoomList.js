@@ -16,8 +16,9 @@ class RoomList extends Component {
   }
 
   deleteRoom(roomKey) {
-    const deleteRoom = this.props.firebase.database().ref('rooms/' + roomKey);
-    deleteRoom.remove();
+    this.roomsRef.update({
+      [roomKey]: null
+    });
   }
 
   componentDidMount() {

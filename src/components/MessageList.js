@@ -22,6 +22,7 @@ class MessageList extends Component {
   componentDidMount() {
     this.messagesRef.on('child_added', snapshot => {
       const messages = snapshot.val();
+      messages.key = snapshot.key;
       this.setState({ messages: this.state.messages.concat( messages ) });
     });
   }
@@ -58,6 +59,24 @@ class MessageList extends Component {
     this.setState({ content: "" });
   }
 
+  formatTime(time) {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = ('0' + date.getMinutes()).slice(-2);
+    const sec = date.getSeconds();
+    const timestamp = month + ' ' + day + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return timestamp;
+  }
+
+  deleteMessage(messageKey) {
+    const deleteMessage = this.props.firebase.database().ref('messages/' + messageKey);
+    deleteMessage.remove();
+  }
+
   render() {
     return (
       <div className="message-list">
@@ -65,10 +84,12 @@ class MessageList extends Component {
         <section className="message-group">
           <h1>Messages</h1>
           {this.state.messages.filter(message => message.roomId === this.props.activeRoom.key).map((message, index) =>
-            <div key={index} className="messages">
+            <div key={message.key} className="messages">
               <p id="username">Username: {message.username}</p>
-              <p id="content">Message: {message.content}</p>
-              <p id="timestamp">Timestamp: {message.sentAt}</p>
+              <p id="content">Message: {message.content}
+                <button onClick={ () => this.deleteMessage(message.key) }>Delete Message</button>
+              </p>
+              <p id="timestamp">Timestamp: {this.formatTime(message.sentAt)}</p>
             </div>
             )}
         </section>
