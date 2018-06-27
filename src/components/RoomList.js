@@ -15,6 +15,11 @@ class RoomList extends Component {
     this.roomsRef = this.props.firebase.database().ref('rooms')
   }
 
+  deleteRoom(roomKey) {
+    const deleteRoom = this.props.firebase.database().ref('rooms/' + roomKey);
+    deleteRoom.remove();
+  }
+
   componentDidMount() {
     this.roomsRef.on('child_added', snapshot => {
       const room = snapshot.val();
@@ -40,13 +45,17 @@ class RoomList extends Component {
         <div className="room-list">
           <section>
             <h1>Room List</h1>
-            {this.state.rooms.map((room, index) =>
-              <li
-                key={index}
+            <ul>
+            {this.state.rooms.map((room, index) => {
+              return (
+              <li key={room.key}
                 onClick={() => this.props.setActiveRoom(room)}>
-                {room.name}
+                <p>{room.name}
+                <button onClick={ () => this.deleteRoom(room.key) }>Delete</button></p>
               </li>
-          )}
+              )
+            })}
+            </ul>
           </section>
           <div id="new-room">
             <form onSubmit={ (e) => this.handleSubmit(e) }>
