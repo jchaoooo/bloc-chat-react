@@ -78,6 +78,21 @@ class MessageList extends Component {
   }
 
   render() {
+  const newMessage = (
+    <div>{this.props.activeRoom ? messageBar : 'Please choose a room'} </div>
+)
+
+  const messageBar = (
+      <form onSubmit={this.handleMessageSubmit}>
+        <label>
+          New Message:
+          <input type="text" value={this.state.content} onChange={this.handleChange} placeholder="Enter Message" />
+        </label>
+        <input type="submit" value="submit" />
+      </form>
+  )
+
+
     return (
       <div className="message-list">
         <h2 className="room-name">{this.props.activeRoom ? this.props.activeRoom.name : 'Please select a room' }</h2>
@@ -94,13 +109,15 @@ class MessageList extends Component {
             )}
         </section>
         <div id="new-message">
-          <form onSubmit={this.handleMessageSubmit}>
+          {newMessage}
+          {messageBar}
+          {/*<form onSubmit={this.handleMessageSubmit}>
             <label>
               New Message:
               <input type="text" value={this.state.content} onChange={this.handleChange} placeholder="Enter Message" />
             </label>
             <input type="submit" value="submit" />
-          </form>
+          </form>*/}
         </div>
       </div>
     )

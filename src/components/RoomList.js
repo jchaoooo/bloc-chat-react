@@ -52,20 +52,19 @@ class RoomList extends Component {
       return (
         <div className="room-list">
           <section>
-            <h1>Room List</h1>
-            <ul>
-            {this.state.rooms.map((room, index) => {
-              return (
-              <li key={room.key}
-                onClick={() => this.props.setActiveRoom(room)}>
-                <p>
-                  {room.name}
-                  <button onClick={ () => this.deleteRoom(room.key) }>Delete</button>
-                  <button onClick={ () => this.renameRoom(room.key) }>Rename</button>
-                </p>
-              </li>
-              )
-            })}
+            <ul className="room-names">
+              {this.state.rooms.map((room, index) => {
+                return (
+                <li key={room.key}
+                  onClick={() => this.props.setActiveRoom(room)}>
+                  <p>
+                    {room.name}
+                    <button onClick={ () => this.deleteRoom(room.key) }>Delete</button>
+                    <button onClick={ () => this.renameRoom(room.key) }>Rename</button>
+                  </p>
+                </li>
+                )
+              })}
             </ul>
           </section>
           <div id="new-room">

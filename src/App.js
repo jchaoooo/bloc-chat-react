@@ -43,11 +43,9 @@ var config = {
     render () {
       return (
         <div className='App'>
-          <header>
-            <h1> BLOC CHAT! </h1>
-          </header>
           <main>
             <section id="sidebar">
+              <h1>Bloc Chat!</h1>
               <RoomList
                 firebase={firebase}
                 activeRoom={this.state.activeRoom}
