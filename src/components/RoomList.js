@@ -15,12 +15,6 @@ class RoomList extends Component {
     this.roomsRef = this.props.firebase.database().ref('rooms')
   }
 
-  deleteRoom(roomKey) {
-    this.roomsRef.update({
-      [roomKey]: null
-    });
-  }
-
   componentDidMount() {
     this.roomsRef.on('child_added', snapshot => {
       const room = snapshot.val();
@@ -40,6 +34,19 @@ class RoomList extends Component {
     this.setState({ newRoomName: ''})
   }
 
+  deleteRoom(roomKey) {
+    this.roomsRef.update({
+      [roomKey]: null
+    });
+  }
+
+  renameRoom(roomKey) {
+    let updatedRoom = {key: this.props.activeRoom.key,
+                      name: window.prompt("Please enter a new room name")};
+    const newRoomName = this.props.firebase.database().ref('rooms/' + roomKey);
+    newRoomName.update({name: updatedRoom.name})
+  }
+
 
   render() {
       return (
@@ -51,8 +58,11 @@ class RoomList extends Component {
               return (
               <li key={room.key}
                 onClick={() => this.props.setActiveRoom(room)}>
-                <p>{room.name}
-                <button onClick={ () => this.deleteRoom(room.key) }>Delete</button></p>
+                <p>
+                  {room.name}
+                  <button onClick={ () => this.deleteRoom(room.key) }>Delete</button>
+                  <button onClick={ () => this.renameRoom(room.key) }>Rename</button>
+                </p>
               </li>
               )
             })}
