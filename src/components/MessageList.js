@@ -78,30 +78,14 @@ class MessageList extends Component {
   }
 
   render() {
-  const newMessage = (
-    <div>{this.props.activeRoom ? messageBar : 'Please choose a room'} </div>
-)
-
-  const messageBar = (
-      <form onSubmit={this.handleMessageSubmit}>
-        <label>
-          New Message:
-          <input type="text" value={this.state.content} onChange={this.handleChange} placeholder="Enter Message" />
-        </label>
-        <input type="submit" value="submit" />
-      </form>
-  )
-
-
     return (
       <div className="message-list">
-        <h2 className="room-name">{this.props.activeRoom ? this.props.activeRoom.name : 'Please select a room' }</h2>
+        <h2 className="message-list-title">{this.props.activeRoom ? this.props.activeRoom.name : 'Please select a room' }</h2>
         <section className="message-group">
-          <h1>Messages</h1>
           {this.state.messages.filter(message => message.roomId === this.props.activeRoom.key).map((message, index) =>
             <div key={message.key} className="messages">
-              <p id="username">Username: {message.username}</p>
-              <p id="content">Message: {message.content}
+              <p id="message-username">Username: {message.username}</p>
+              <p id="message-content">Message: {message.content}
                 <button onClick={ () => this.deleteMessage(message.key) }>Delete Message</button>
               </p>
               <p id="timestamp">Timestamp: {this.formatTime(message.sentAt)}</p>
@@ -109,8 +93,16 @@ class MessageList extends Component {
             )}
         </section>
         <div id="new-message">
-          {newMessage}
-          {messageBar}
+          <div>{this.props.activeRoom ?
+            <form onSubmit={this.handleMessageSubmit}>
+              <label>
+                New Message:
+                <input type="text" value={this.state.content} onChange={this.handleChange} placeholder="Enter Message" />
+              </label>
+              <input type="submit" value="submit" />
+            </form>
+             :
+             'Welcome!'}</div>
           {/*<form onSubmit={this.handleMessageSubmit}>
             <label>
               New Message:

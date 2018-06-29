@@ -8,6 +8,7 @@ class RoomList extends Component {
     this.state = {
       rooms: [],
       newRoomName: "",
+      isMouseInside: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -47,6 +48,16 @@ class RoomList extends Component {
     newRoomName.update({name: updatedRoom.name})
   }
 
+  onMouseOver(e, room) {
+    this.setState({ isMouseInside: true });
+    console.log('enter')
+  }
+
+  onMouseLeave(e) {
+    this.setState({ isMouseInside: false })
+    console.log('leave')
+  }
+
 
   render() {
       return (
@@ -57,8 +68,10 @@ class RoomList extends Component {
                 return (
                 <li key={room.key}
                   onClick={() => this.props.setActiveRoom(room)}>
-                  <p>
+                  <p onMouseOver={(e) => this.onMouseOver(e, room)}
+                     onMouseLeave={(e) => this.onMouseLeave(e)}>
                     {room.name}
+                    {this.state.isMouseInside ? 'Delete' : null}
                     <button onClick={ () => this.deleteRoom(room.key) }>Delete</button>
                     <button onClick={ () => this.renameRoom(room.key) }>Rename</button>
                   </p>
